@@ -32,14 +32,31 @@ class Album
     return Artist.new(result)
   end
 
-  # #write customer method in pizza class so we have access to customer pizza instances
-  #   def customer()
-  #     sql = "SELECT * FROM customers WHERE id = $1"
-  #     values = [@customer_id]
-  #     #this allows us to link between customer and pizza order.  select all from customers where customer id is equal to pizza order @customer_id
-  #     result = SqlRunner.run(sql, values)[0]
-  #     return Customer.new(result)
-  #   end
+  def update()
+    sql = "UPDATE albums SET (title, genre, artist_id) = ($1,$2, $3) WHERE id = $4"
+    values = [@title, @genre, @artist_id, @id]
+    SqlRunner.run(sql, values)
+  end
+
+  def delete()
+    sql = "DELETE FROM albums WHERE id = $1"
+    values = [@id]
+    SqlRunner.run(sql, values)
+  end
+
+  def self.delete_all()
+    sql = "DELETE FROM albums"
+    SqlRunner.run(sql)
+  end
+
+  def self.find_by_id(id)
+    sql = "SELECT * FROM albums WHERE id = $1"
+    values = [id]
+    result = SqlRunner.run(sql, values)[0]
+    return Album.new(result)
+  end
+
+
 
 
 end
